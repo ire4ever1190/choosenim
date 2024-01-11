@@ -20,8 +20,6 @@ jobs:
         uses: jiro4989/setup-nim-action@v1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install forge
-        run: nimble install forge
       - name: Install zig
         run: sudo apt update && sudo apt install zig
       - name: Build binary

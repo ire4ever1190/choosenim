@@ -21,7 +21,9 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install zig
-        run: sudo apt update && sudo apt install zig
+        uses: korandoru/setup-zig@v1
+        with:
+          zig-version: 0.12.0
       - name: Build binary
         run: |
           nimble -y release

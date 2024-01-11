@@ -24,10 +24,6 @@ requires "zippy >= 0.7.2"
 when defined(windows):
   requires "puppy 1.5.4"
 
-# Sadly can't use taskRequires because of the ancient nimble this uses =(
-# One of these days I'll get to use it
-requires "forge"
-
 task release, "Builds all release binaries":
   exec "forge release --version=" & version
   mkdir "bin"

@@ -24,6 +24,12 @@ jobs:
         uses: korandoru/setup-zig@v1
         with:
           zig-version: 0.11.0
+      - name: Install dependencies
+        run: |
+          # Sadly can't use taskRequires because of the ancient nimble this uses =(
+          # One of these days I'll get to use it
+          nimble install -y --depsOnly
+          nimble install -y forge
       - name: Build binary
         run: |
           nimble -y release

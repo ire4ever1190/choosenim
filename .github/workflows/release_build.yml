@@ -13,24 +13,25 @@ on:
 
 jobs:
   build:
-  strategy:
-    fail-fast: false
-    matrix:
-      # Windows builds
-      # - os: windows-latest
-      #   target: x86_64-windows-gnu
-      #   suffix: windows_amd64
-      # - os: windows-latest
-      #   target: aarch64-windows-gnu
-      #   suffix: windows_arm64
-      #   cpu: arm
-      # Linux builds
-      - os: linux-latest
-        target: aarch64-linux-gnu
-        suffix: linux_arm64
-        cpu: arm
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Windows builds
+          # - os: windows-latest
+          #   target: x86_64-windows-gnu
+          #   suffix: windows_amd64
+          # - os: windows-latest
+          #   target: aarch64-windows-gnu
+          #   suffix: windows_arm64
+          #   cpu: arm
+          # Linux builds
+          - os: linux-latest
+            target: aarch64-linux-gnu
+            suffix: linux_arm64
+            cpu: arm
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Nim

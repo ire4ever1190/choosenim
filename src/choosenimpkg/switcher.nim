@@ -14,6 +14,7 @@ proc compileProxyexe() =
       "cmd /C \"cd ../../ && nimble c"
     else:
       "cd ../../ && nimble c"
+  cmd &= " -y"
   when defined(release):
     cmd.add " -d:release"
   when defined(staticBuild):

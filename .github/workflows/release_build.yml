@@ -52,13 +52,13 @@ jobs:
         run: |
           nimble install -y zigcc
       - name: Build binary
-        run: nimble -y build -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}" --out:bin/choosenim-${{ github.ref_name }}_${{ matrix.suffix }}
-
+        run: |
+            nimble -y build -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}"
+            mv bin/choosenim bin/choosenim-${{ github.ref_name }}_${{ matrix.suffix }}
       - name: Upload binaries to release/tag
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           overwrite: true
           tag: ${{ github.ref }}
-          file_glob: true
-          file: bin/choosenim*
+          file: bin/choosenim-${{ github.ref_name }}_${{ matrix.suffix }}

@@ -53,7 +53,7 @@ jobs:
           nimble install -y zigcc
       - name: Build binary
         run: |
-            nimble -y build -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}"
+            nimble -y build -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}" -d:release --opt:size
             mv bin/choosenim bin/choosenim-${{ github.ref_name }}_${{ matrix.suffix }}
       - name: Upload binaries to release/tag
         uses: svenstaro/upload-release-action@v2

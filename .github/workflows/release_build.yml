@@ -13,6 +13,23 @@ on:
 
 jobs:
   build:
+  strategy:
+    fail-fast: false
+    matrix:
+      # Windows builds
+      # - os: windows-latest
+      #   target: x86_64-windows-gnu
+      #   suffix: windows_amd64
+      # - os: windows-latest
+      #   target: aarch64-windows-gnu
+      #   suffix: windows_arm64
+      #   cpu: arm
+      # Linux builds
+      - os: linux-latest
+        target: aarch64-linux-gnu
+        suffix: linux_arm64
+        cpu: arm
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,13 +43,10 @@ jobs:
           zig-version: 0.11.0
       - name: Install dependencies
         run: |
-          # Sadly can't use taskRequires because of the ancient nimble this uses =(
-          # One of these days I'll get to use it
           nimble install -y --depsOnly
-          nimble install -y forge
+          nimble install zigcc
       - name: Build binary
-        run: |
-          nimble -y release
+        run: nimble build -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}" --out:bin/choosenim-${{ github.ref }}_${{ matrix.suffix }}
 
       - name: Upload binaries to release/tag
         uses: svenstaro/upload-release-action@v2
@@ -40,5 +54,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           overwrite: true
           tag: ${{ github.ref }}
-          file_glob: true
-          file: bin/*
+          file: bin/choosenim

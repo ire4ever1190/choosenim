@@ -19,10 +19,10 @@ requires "nim >= 1.2.6", "nimble#8f7af86"
 when defined(macosx):
   requires "libcurl >= 1.0.0"
 requires "analytics >= 0.3.0"
-requires "osinfo >= 0.3.0"
+requires "https://github.com/ire4ever1190/osinfo#aa7d296"
 requires "zippy >= 0.7.2"
 when defined(windows):
-  requires "puppy 1.5.4"
+  requires "puppy >= 1.5.4"
 
 task release, "Builds all release binaries":
   exec "forge release --version=" & version

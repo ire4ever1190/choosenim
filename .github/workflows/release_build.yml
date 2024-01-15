@@ -62,3 +62,30 @@ jobs:
           overwrite: true
           tag: ${{ github.ref }}
           file: bin/choosenim-${{ github.ref_name }}_${{ matrix.suffix }}
+  deploy-site:
+    name: Deploy site
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download workflow artifact
+        uses: dawidd6/action-download-artifact@v3.0.0
+
+      - uses: actions/checkout@v4
+
+      - name: Setup Nim
+        uses: jiro4989/setup-nim-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create index
+        run: nim md2html --out:site/index.html readme.md
+
+      - name: Deploy site
+        uses: actions/deploy-pages@v4
+

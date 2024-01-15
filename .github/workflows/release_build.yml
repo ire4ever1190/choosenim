@@ -65,6 +65,7 @@ jobs:
       - name: Upload artefacts
         uses: actions/upload-artifact@v4
         with:
+          name: choosenim-${{ github.ref_name }}_${{ matrix.suffix }}
           path: bin/choosenim-${{ github.ref_name }}_${{ matrix.suffix }}
 
   deploy-site:

@@ -1,4 +1,4 @@
-# choosenim
+# Choosenim
 
 choosenim installs the [Nim programming language](https://nim-lang.org) from
 official downloads and sources, enabling you to easily switch between stable
@@ -67,10 +67,10 @@ this isn't vetted by the Nim team so you do so at your own risk).
 
 ### Unix
 
-```
+```cmd
 curl https://nim-lang.org/choosenim/init.sh -sSf | sh
 ```
-```
+```cmd
 wget -qO - https://nim-lang.org/choosenim/init.sh | sh
 ```
 
@@ -106,16 +106,17 @@ install them accordingly.
 
 ## Dependencies
 
-|            |           Windows             |        Linux            |        macOS (*)      |
-|------------|:-----------------------------:|:-----------------------:|:---------------------:|
+|     📦     |           Windows             |        Linux            |        macOS (\*)     |
+|------------|-------------------------------|-------------------------|-----------------------|
 | C compiler | *Downloaded automatically*    |      gcc/clang          |      gcc/clang        |
 | OpenSSL    |             N/A               |         N/A             |         N/A           |
 | curl       |             N/A               | Any recent version (※) | Any recent version    |
 
+
 \* Many macOS dependencies should already be installed. You may need to install
    a C compiler however. More information on dependencies is available
    [here](https://nim-lang.org/install_unix.html).
-   
+
 ※ Some users needed to install `libcurl4-gnutls-dev` (see [here](https://github.com/dom96/choosenim/issues/303))
 
 Git is required when installing #HEAD or a specific commit of Nim. The `unxz`

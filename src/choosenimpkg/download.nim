@@ -69,7 +69,7 @@ proc addGithubAuthentication(url: string): string =
 when defined(curl):
   proc checkCurl(code: Code) =
     if code != E_OK:
-      raise newException(AssertionError, "CURL failed: " & $easy_strerror(code))
+      raise newException(CatchableError, "CURL failed: " & $easy_strerror(code))
 
   proc downloadFileCurl(url, outputPath: string) =
     displayDebug("Downloading using Curl")

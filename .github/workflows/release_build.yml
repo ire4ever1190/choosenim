@@ -81,7 +81,8 @@ jobs:
     steps:
       - name: Download workflow artifact
         uses: actions/download-artifact@v4
-        path: site/
+        with:
+          path: site/
 
       - uses: actions/checkout@v4
 

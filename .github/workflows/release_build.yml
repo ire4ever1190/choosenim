@@ -81,6 +81,7 @@ jobs:
     steps:
       - name: Download workflow artifact
         uses: actions/download-artifact@v4
+        path: site/
 
       - uses: actions/checkout@v4
 
@@ -91,6 +92,10 @@ jobs:
 
       - name: Create index
         run: nim md2html --out:site/index.html readme.md
+
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: site/
 
       - name: Deploy site
         uses: actions/deploy-pages@v4

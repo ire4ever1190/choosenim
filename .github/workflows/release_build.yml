@@ -94,7 +94,8 @@ jobs:
       - name: Create index
         run: nim md2html --out:site/index.html readme.md
 
-      - uses: actions/upload-pages-artifact@v1
+      - name: Create pages artefact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: site/
 

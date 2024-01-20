@@ -8,6 +8,8 @@ import cliparams, common
 when defined(windows):
   import env
 
+const target {.strdefine: "zig.target".} = ""
+
 proc compileProxyexe() =
   var cmd =
     when defined(windows):
@@ -19,6 +21,8 @@ proc compileProxyexe() =
     cmd.add " -d:release"
   when defined(staticBuild):
     cmd.add " -d:staticBuild"
+  when target != "":
+    cmd.add " -d:zig.target=" & target
   cmd.add " src/choosenimpkg/proxyexe"
   when defined(windows):
     cmd.add("\"")

@@ -36,7 +36,7 @@ install() {
     stable_version=`wget -qO - https://choosenim.leahy.dev/stable`
   fi
   local filename="choosenim-$stable_version"_"$platform"
-  local url="$url_prefix"v"$stable_version/$filename"
+  local url="$url_prefix$stable_version/$filename"
   local ext=""
 
   case $platform in

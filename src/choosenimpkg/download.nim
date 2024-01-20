@@ -252,7 +252,7 @@ proc downloadImpl(version: Version, params: CliParams): string =
       try:
         let rawContents = retrieveUrl(githubNightliesReleasesUrl.addGithubAuthentication())
         let parsedContents = parseJson(rawContents)
-        (url, reference) = getNightliesUrl(parsedContents, arch)
+        (url, reference) = getNightliesUrl(parsedContents)
         if url.len == 0:
           display(
             "Warning", "Recent nightly release not found, installing latest devel commit.",

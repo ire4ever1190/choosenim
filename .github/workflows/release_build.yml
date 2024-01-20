@@ -86,8 +86,9 @@ jobs:
 
       # https://stackoverflow.com/questions/1500204/how-do-i-remove-specific-characters-from-file-names-using-bash
       - name: Remove enclosing folder and fix names
+        working-directory: site
         run: |
-          for file in site/*; do
+          for file in *; do
             # Remove enclosing folder
             mv "${file}/${file}" "${file}";
             # Remove version

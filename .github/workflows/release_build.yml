@@ -89,10 +89,7 @@ jobs:
         working-directory: site
         run: |
           for file in *; do
-            # Remove enclosing folder
-            mv "${file}/${file}" "${file}";
-            # Remove version
-            mv "${file}" "${file/${{ github.ref_name }}/latest}";
+            mv "${file}/${file}" "${file/${{ github.ref_name }}/latest}";
           done
 
       - name: Setup Nim

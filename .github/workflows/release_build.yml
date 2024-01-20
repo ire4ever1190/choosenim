@@ -92,6 +92,9 @@ jobs:
             mv "${file}/${file}" "${file/${{ github.ref_name }}/latest}";
           done
 
+      - name: Add latest version
+        run: echo "${{ github.ref_name }}" >> site/stable
+
       - name: Setup Nim
         uses: jiro4989/setup-nim-action@v1
         with:
@@ -100,6 +103,9 @@ jobs:
 
       - name: Create index
         run: nim md2html --out:site/index.html readme.md
+
+      - name: Add init script
+        run: mv scripts/choosenim-unix-init.sh site/init.sh
 
       - name: Create pages artefact
         uses: actions/upload-pages-artifact@v3

@@ -67,6 +67,7 @@ jobs:
         with:
           name: choosenim-${{ github.ref_name }}_${{ matrix.suffix }}
           path: bin/choosenim-${{ github.ref_name }}_${{ matrix.suffix }}
+          retention-days: 1
 
   deploy-site:
     name: Deploy site
@@ -74,21 +75,29 @@ jobs:
     permissions:
       pages: write
       id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Download workflow artifact
-        uses: actions/download-artifact@v4
+        uses: `@v4
         with:
           path: site/
+
+      # https://stackoverflow.com/questions/1500204/how-do-i-remove-specific-characters-from-file-names-using-bash
+      - name: Remove enclosing folder and fix names
+        run: |
+          for file in site/*; do
+            # Remove enclosing folder
+            mv "${file}/${file}" "${file}";
+            # Remove version
+            mv "${file}" "${file/${{ github.ref_name }}/latest}";
+          done
 
       - name: Setup Nim
         uses: jiro4989/setup-nim-action@v1
         with:
+          version: devel
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create index

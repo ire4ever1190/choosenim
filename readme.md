@@ -54,7 +54,7 @@ Versions can be selected via `choosenim 1.6.6` or by branch/tag name via `choose
 ### Windows
 
 Download the latest Windows version from the
-[releases](https://github.com/dom96/choosenim/releases) page (the .zip file, for example here is [``v0.7.4``](https://github.com/dom96/choosenim/releases/download/v0.7.4/choosenim-0.7.4_windows_amd64.zip)).
+[releases](https://github.com/ire4ever1190/choosenim/releases) page (the .zip file, for example here is [``v0.7.4``](https://github.com/dom96/choosenim/releases/download/v0.7.4/choosenim-0.7.4_windows_amd64.zip)).
 
 Extract the zip archive and run the ``runme.bat`` script. Follow any on screen
 prompts and enjoy your new Nim and choosenim installation.
@@ -68,10 +68,10 @@ this isn't vetted by the Nim team so you do so at your own risk).
 ### Unix
 
 ```cmd
-curl https://nim-lang.org/choosenim/init.sh -sSf | sh
+curl https://choosenim.leahy.dev/init.sh -sSf | sh
 ```
 ```cmd
-wget -qO - https://nim-lang.org/choosenim/init.sh | sh
+wget -qO - https://choosenim.leahy.dev/init.sh | sh
 ```
 
 **Optional:** You can specify the initial version you would like the `init.sh`

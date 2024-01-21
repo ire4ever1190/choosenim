@@ -18,7 +18,6 @@ skipExt = @["nim"]
 requires "nim >= 1.2.6", "nimble#8f7af86"
 when defined(macosx):
   requires "libcurl >= 1.0.0"
-requires "analytics >= 0.3.0"
 requires "https://github.com/ire4ever1190/osinfo#aa7d296"
 requires "zippy >= 0.7.2"
 when defined(windows):

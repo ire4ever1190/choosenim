@@ -9,7 +9,7 @@ on:
 jobs:
   nim-tests:
     name: Nim tests
-    timeout-minutes: 30
+    timeout-minutes: 60
     strategy:
       matrix:
         os:

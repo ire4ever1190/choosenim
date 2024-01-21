@@ -171,7 +171,7 @@ proc getLatestCommit*(repo, branch: string): string =
     else:
       display("Warning", outp & "\ngit ls-remote failed", Warning, HighPriority)
 
-func getArch(): string =
+func getArch*(): string =
   ## Gets CPU arch. This is based on what system choosenim was compiled for.
   ## See https://github.com/nim-lang/nightlies/releases for why we need to map this
   case hostCPU

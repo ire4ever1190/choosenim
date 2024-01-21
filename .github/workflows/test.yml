@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run script
-        run: bash scripts/choosenim-unix-init.sh
+        run: bash scripts/choosenim-unix-init.sh -y
 
       - name: Update path
         run: echo "~/.nimble/bin" >> $GITHUB_PATH

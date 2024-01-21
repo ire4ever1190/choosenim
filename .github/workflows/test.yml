@@ -1,0 +1,28 @@
+name: Run tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  nim-tests:
+    name: Nim tests
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+          - macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Nim
+        uses: jiro4989/setup-nim-action@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Can build
+        run: nimble -y build
+      - name: Run tests
+        run: nimble test
+

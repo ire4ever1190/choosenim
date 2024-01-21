@@ -40,7 +40,7 @@ jobs:
           - macos-latest
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkoput@v4
+      - uses: actions/checkout@v4
 
       - name: Run script
         run: bash scripts/choosenim-unix-init.sh

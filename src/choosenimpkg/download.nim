@@ -317,7 +317,7 @@ proc download*(version: Version, params: CliParams): string =
                        $version)
 
 template useCSourcesV2(version: Version): bool =
-  $version in ["#head", "#devel", "#version-2-0"]
+  $version in ["#head", "#devel", "#version-2-0"] or version >= parseVersion("2.0.0")
 
 proc downloadCSources*(version: Version, params: CliParams): string =
   let csourcesAdaptedUrl =

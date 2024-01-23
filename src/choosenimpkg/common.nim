@@ -14,6 +14,8 @@ const
       "nimsuggest",
       "testament",
       "nim-gdb",
+      "atlas",
+      "nim_dbg"
     ]
 
   mingwProxies* = [

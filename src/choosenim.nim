@@ -148,7 +148,7 @@ proc updateSelf(params: CliParams) =
   # https://stackoverflow.com/a/9163044/492186
   let tag = "v" & $version
   let filename = "choosenim-" & $version & "_" & hostOS & "_" & hostCPU.addFileExt(ExeExt)
-  let url = "https://github.com/dom96/choosenim/releases/download/$1/$2" % [
+  let url = "https://github.com/ire4ever1190/choosenim/releases/download/$1/$2" % [
     tag, filename
   ]
   let newFilename = getAppDir() / "choosenim_new".addFileExt(ExeExt)

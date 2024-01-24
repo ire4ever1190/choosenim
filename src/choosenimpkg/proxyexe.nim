@@ -70,5 +70,5 @@ when isMainModule:
       display("Hint:", hint, Warning, HighPriority)
 
     display("Info:", "If unexpected, please report this error to " &
-            "https://github.com/dom96/choosenim", Warning, HighPriority)
+            "https://github.com/ire4ever1190/choosenim", Warning, HighPriority)
     quit(1)

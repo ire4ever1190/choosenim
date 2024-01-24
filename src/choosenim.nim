@@ -1,6 +1,6 @@
 # Copyright (C) Dominik Picheta. All rights reserved.
 # BSD-3-Clause License. Look at license.txt for more info.
-import os, strutils, algorithm
+import os, strutils, algorithm, sugar
 
 import nimblepkg/[cli, version]
 import nimblepkg/common as nimbleCommon
@@ -136,8 +136,10 @@ proc choose(params: CliParams) =
 
 proc updateSelf(params: CliParams) =
   display("Updating", "choosenim", priority = HighPriority)
-
-  let version = getChannelVersion("self", params, live=true).newVersion
+  # So I did a lil oopsie and added a `v` because it was easier
+  # turns out there is a reason it doesn't have a v
+  # TODO: Remove this v stripping prefix nonsense in a later version
+  let version = getChannelVersion("self", params, live=true).dup(removePrefix("v")).newVersion
   if not params.force and version <= chooseNimVersion.newVersion:
     display("Info:", "Already up to date at version " & chooseNimVersion,
             Success, HighPriority)
@@ -145,8 +147,8 @@ proc updateSelf(params: CliParams) =
 
   # https://stackoverflow.com/a/9163044/492186
   let tag = "v" & $version
-  let filename = "choosenim-" & $version & "_" & hostOS & "_" & hostCPU.addFileExt(ExeExt)
-  let url = "https://github.com/dom96/choosenim/releases/download/$1/$2" % [
+  let filename = "choosenim-" & tag & "_" & hostOS & "_" & hostCPU.addFileExt(ExeExt)
+  let url = "https://github.com/ire4ever1190/choosenim/releases/download/$1/$2" % [
     tag, filename
   ]
   let newFilename = getAppDir() / "choosenim_new".addFileExt(ExeExt)

@@ -64,16 +64,16 @@ jobs:
         run: |
           nimble install -y zigcc
       - name: Build proxy
-        run: |
-            nimble -y c src/choosenimpkg/proxyexe \
-                -d:zig.target="${{ matrix.target }}" \
-                --cpu:"${{ matrix.cpu }}"\
+        run: >
+            nimble -y c src/choosenimpkg/proxyexe
+                -d:zig.target="${{ matrix.target }}"
+                --cpu:"${{ matrix.cpu }}"
                 -d:ci
       - name: Build binary
-        run: |
-            nimble -y build \
-                -d:zig.target="${{ matrix.target }}" \
-                --cpu:"${{ matrix.cpu }}" \
+        run: >
+            nimble -y build
+                -d:zig.target="${{ matrix.target }}"
+                --cpu:"${{ matrix.cpu }}"
                 -d:ci -d:noBuildProxy
 
       - name: Update file name

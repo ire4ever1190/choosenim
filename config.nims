@@ -16,3 +16,6 @@ if target != "":
     switch("passL", "--sysroot=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
 
 switch("d", "zippyNoSimd")
+
+when defined(staticBuild) and not defined(OSX):
+  switch("passL", "-static")

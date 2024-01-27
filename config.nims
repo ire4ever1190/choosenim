@@ -17,5 +17,12 @@ if target != "":
 
 switch("d", "zippyNoSimd")
 
+when defined(ci):
+  switch("d", "release")
+  switch("d", "strip")
+  switch("d", "staticBuild")
+  switch("opt", "size")
+  switch("d", "nimDebugDlOpen")
+
 when defined(staticBuild) and not defined(OSX):
   switch("passL", "-static")

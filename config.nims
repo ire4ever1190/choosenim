@@ -23,6 +23,3 @@ when defined(ci):
   switch("d", "staticBuild")
   switch("opt", "size")
   switch("d", "nimDebugDlOpen")
-
-when defined(staticBuild) and not defined(OSX):
-  switch("passL", "-static")

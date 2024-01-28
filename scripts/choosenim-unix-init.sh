@@ -90,7 +90,7 @@ install() {
     case "${SHELL:=sh}" in
       *fish*)
       say "Running fish shell?"
-      say "set -ga fish_user_paths $nimbleBinDir"
+      say "set -ga fish_user_paths $nimbleBinDir (or run fish_add_path $nimbleBinDir)"
     ;;
     esac
   fi

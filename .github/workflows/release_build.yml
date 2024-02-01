@@ -26,28 +26,41 @@ jobs:
             target: x86_64-windows-gnu
             suffix: windows_amd64
             cpu: amd64
+            args:
           - os: windows-latest
             target: aarch64-windows-gnu
             suffix: windows_arm64
             cpu: arm64
+            args:
           # Linux builds
           - os: ubuntu-latest
             target: aarch64-linux-musl
             suffix: linux_arm64
             cpu: arm64
+            args:
           - os: ubuntu-latest
             target: x86_64-linux-musl
             suffix: linux_amd64
             cpu: amd64
+            args:
           # MacOS builds
           - os: macos-latest
             target: aarch64-macos-none
             suffix: macosx_arm64
             cpu: arm64
+            args:
           - os: macos-latest
             target: x86_64-macos-none
             suffix: macosx_amd64
             cpu: amd64
+            args:
+          # Android (Termux)
+          - os: ubuntu-latest
+            target: aarch64-linux-android
+            suffix: android_arm64
+            cpu: arm64
+            args: -d:android
+
     runs-on: ${{ matrix.os }}
     name: Build ${{ matrix.target }}
     steps:
@@ -65,10 +78,10 @@ jobs:
           nimble install -y zigcc
       - name: Build proxy
         run: |
-            nimble -y c src/choosenimpkg/proxyexe -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}" -d:ci
+            nimble -y c src/choosenimpkg/proxyexe -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}" -d:ci {{ matrix.args }}
       - name: Build binary
         run: |
-            nimble -y build -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}" -d:ci -d:noBuildProxy
+            nimble -y build -d:zig.target="${{ matrix.target }}" --cpu:"${{ matrix.cpu }}" -d:ci -d:noBuildProxy {{ matrix.args }}
 
       - name: Update file name
         if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}

@@ -56,7 +56,7 @@ jobs:
             args:
           # Android (Termux)
           - os: ubuntu-latest
-            target: aarch64-linux-android
+            target: aarch64-linux-musl
             suffix: android_arm64
             cpu: arm64
             args: -d:android

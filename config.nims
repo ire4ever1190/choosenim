@@ -23,5 +23,6 @@ when defined(ci):
   switch("d", "staticBuild")
   switch("passC", "-DCURL_STATICLIB -static")
   switch("dynlibOverride", "curl")
+  switch("passL", "-llibcurl")
   switch("opt", "size")
   switch("d", "nimDebugDlOpen")

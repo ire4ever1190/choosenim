@@ -21,5 +21,7 @@ when defined(ci):
   switch("d", "release")
   switch("d", "strip")
   switch("d", "staticBuild")
+  switch("passC", "-DCURL_STATICLIB -static")
+  switch("dynlibOverride", "curl")
   switch("opt", "size")
   switch("d", "nimDebugDlOpen")

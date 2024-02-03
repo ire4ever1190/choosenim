@@ -8,3 +8,10 @@ tests/choosenimDir
 tests/nimbleDir
 tests/tester
 
+# Xmake cache
+.xmake/
+build/
+
+# MacOS Cache
+.DS_Store
+

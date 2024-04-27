@@ -126,7 +126,7 @@ proc build*(extractDir: string, version: Version, params: CliParams) =
 
   var success = false
   try:
-    if fileExists(getCurrentDir() / "bin" / "nim".addFileExt(ExeExt)) and not getArch().startsWith("arm"):
+    if fileExists(getCurrentDir() / "bin" / "nim".addFileExt(ExeExt)) and not defined(arm):
       if not version.isDevel() or not params.latest:
         display("Compiler:", "Already built", priority = HighPriority)
         success = true

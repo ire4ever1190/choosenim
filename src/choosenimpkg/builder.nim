@@ -1,4 +1,4 @@
-import os, times, strutils
+import os, times
 
 import nimblepkg/[version, cli]
 import nimblepkg/common as nimble_common
@@ -126,7 +126,7 @@ proc build*(extractDir: string, version: Version, params: CliParams) =
 
   var success = false
   try:
-    if fileExists(getCurrentDir() / "bin" / "nim".addFileExt(ExeExt)) and not defined(arm):
+    if fileExists(getCurrentDir() / "bin" / "nim".addFileExt(ExeExt)):
       if not version.isDevel() or not params.latest:
         display("Compiler:", "Already built", priority = HighPriority)
         success = true

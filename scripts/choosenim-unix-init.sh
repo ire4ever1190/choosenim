@@ -40,7 +40,7 @@ install() {
   local ext=""
 
   case $platform in
-    *macosx_amd64* | *linux_amd64* | *linux_arm*)
+    *macosx_amd64* | *linux_amd64* | *linux_arm* | *macosx_arm*)
       ;;
     *windows_amd64* )
       # Download ZIP for Windows

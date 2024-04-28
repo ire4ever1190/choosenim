@@ -61,10 +61,6 @@ proc chooseVersion(version: string, params: CliParams) =
   # Command is a version.
   var parsedVer = parseVersion(version)
 
-  # We need to build for ARM from source for normal releases
-  # TODO: Figure out who controls the website and ask if they could upload ARM builds
-  if getArch().startsWith("arm") and not (parsedVer.isSpecial or parsedVer.isDevel):
-    parsedVer = newVersion("#v" & version)
   # Verify that C compiler is installed.
   if params.needsCCInstall():
     when defined(windows):

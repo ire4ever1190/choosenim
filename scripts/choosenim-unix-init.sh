@@ -157,7 +157,11 @@ get_platform() {
     *mips* )
       local mycpu="mips" ;;
     *arm*|*armv6l* )
-      local mycpu="arm" ;;
+      if [ $myos = "macosx" ]; then
+        local mycpu="arm64"
+      else
+        local mycpu="arm"
+      fi;;
     *aarch64* )
       local mycpu="arm64" ;;
     *)

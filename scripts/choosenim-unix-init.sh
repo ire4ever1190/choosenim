@@ -40,7 +40,7 @@ install() {
   local ext=""
 
   case $platform in
-    *macosx_amd64* | *linux_amd64* | *linux_arm*)
+    *macosx_amd64* | *linux_amd64* | *linux_arm* | *macosx_arm*)
       ;;
     *windows_amd64* )
       # Download ZIP for Windows
@@ -157,7 +157,11 @@ get_platform() {
     *mips* )
       local mycpu="mips" ;;
     *arm*|*armv6l* )
-      local mycpu="arm" ;;
+      if [ $myos = "macosx" ]; then
+        local mycpu="arm64"
+      else
+        local mycpu="arm"
+      fi;;
     *aarch64* )
       local mycpu="arm64" ;;
     *)

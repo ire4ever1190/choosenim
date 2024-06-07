@@ -38,7 +38,11 @@ when not useSymLinks:
   const proxyExe = staticRead("proxyexe".addFileExt(ExeExt))
 
 proc getInstallationDir*(params: CliParams, version: Version): string =
-  return params.getInstallDir() / ("nim-$1" % $version)
+  # Nimble does this fun little thing where it quotes the binary before
+  # running it. Since # is considered not safe for posix, the whole thing gets
+  # escaped which causes the command to fail
+  let versionStr = replace($version, "#", "hash")
+  return params.getInstallDir() / ("nim" & versionStr)
 
 proc isVersionInstalled*(params: CliParams, version: Version): bool =
   return fileExists(params.getInstallationDir(version) / "bin" /
@@ -136,9 +140,7 @@ proc writeProxy(bin: string, params: CliParams) =
 
   if symlinkExists(proxyPath) or (useSymLinks and fileExists(proxyPath)):
     when useSymLinks:
-      echo "Removing ", proxyPath
       removeFile(proxyPath)
-      echo "removed"
     else:
       let msg = "Symlink for '$1' detected in '$2'. Can I remove it?" %
                 [bin, proxyPath.splitFile().dir]
@@ -148,11 +150,11 @@ proc writeProxy(bin: string, params: CliParams) =
       display("Removed", "symlink pointing to $1" % symlinkPath,
               priority = HighPriority)
 
+  let targetPath = params.getExePath(bin.addFileExt(ExeExt))
   # Use old proxy on windows, but stick with symlinks on linux systems
   # TODO: Test if developer mode is enabled and we can create symlinks
   when useSymLinks:
-    echo params.getSelectedPath() / bin.addFileExt(ExeExt)
-    createSymlink(params.getExePath(bin.addFileExt(ExeExt)), proxyPath)
+    createSymlink(targetPath, proxyPath)
   else:
     # Don't write the file again if it already exists.
     if fileExists(proxyPath) and readFile(proxyPath) == proxyExe: return
@@ -180,7 +182,7 @@ proc writeProxy(bin: string, params: CliParams) =
         "Binary '$1' isn't in your PATH. Ensure that '$2' is in your PATH." %
           [bin, params.getBinDir()]
     display("Hint:", msg, Warning, HighPriority)
-  elif fromPATH != "" and fromPATH != proxyPath:
+  elif fromPATH notin ["", proxyPath, targetPath]:
     display("Warning:", "Binary '$1' is shadowed by '$2'." %
             [bin, fromPATH], Warning, HighPriority)
     display("Hint:", "Ensure that '$1' is before '$2' in the PATH env var." %

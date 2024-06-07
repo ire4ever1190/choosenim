@@ -9,35 +9,8 @@ import nimblepkg/common as nimbleCommon
 import cliparams
 from common import ChooseNimError, mingwProxies
 
-proc getSelectedPath(params: CliParams): string =
-  var path = ""
-  try:
-    path = params.getCurrentFile()
-    if not fileExists(path):
-      let msg = "No installation has been chosen. (File missing: $1)" % path
-      raise newException(ChooseNimError, msg)
-
-    result = readFile(path)
-  except Exception as exc:
-    let msg = "Unable to read $1. (Error was: $2)" % [path, exc.msg]
-    raise newException(ChooseNimError, msg)
-
-proc getExePath(params: CliParams): string
-  {.raises: [ChooseNimError, ValueError].} =
-  try:
-    let exe = getAppFilename().extractFilename
-    let exeName = exe.splitFile.name
-
-    if exeName in mingwProxies and defined(windows):
-      return getMingwBin(params) / exe
-    else:
-      return getSelectedPath(params) / "bin" / exe
-  except Exception as exc:
-    let msg = "getAppFilename failed. (Error was: $1)" % exc.msg
-    raise newException(ChooseNimError, msg)
-
 proc main(params: CliParams) {.raises: [ChooseNimError, ValueError].} =
-  let exePath = getExePath(params)
+  let exePath = getExePath(params, getAppFilename().extractFilename)
   if not fileExists(exePath):
     raise newException(ChooseNimError,
         "Requested executable is missing. (Path: $1)" % exePath)

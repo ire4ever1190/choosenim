@@ -5,6 +5,8 @@ from nimblepkg/packageinfo import getNameVersion
 
 import cliparams, common
 
+const useSymLinks {.booldefine: "useSymLinks"}: bool = false
+
 when defined(windows):
   import env
 
@@ -29,11 +31,11 @@ proc compileProxyexe() =
   let (output, exitCode) = gorgeEx(cmd)
   doAssert exitCode == 0, $(output, cmd)
 
-when not defined(noBuildProxy):
+when not (defined(noBuildProxy) or useSymLinks):
   static: compileProxyexe()
 
-const
-  proxyExe = staticRead("proxyexe".addFileExt(ExeExt))
+when not useSymLinks:
+  const proxyExe = staticRead("proxyexe".addFileExt(ExeExt))
 
 proc getInstallationDir*(params: CliParams, version: Version): string =
   return params.getInstallDir() / ("nim-$1" % $version)
@@ -57,10 +59,11 @@ proc areProxiesInstalled(params: CliParams, proxies: openarray[string]): bool =
     if not fileExists(path):
       return false
 
-    # Verify that proxy binary is up-to-date.
-    let contents = readFile(path)
-    if contents != proxyExe:
-      return false
+    when not useSymLinks:
+      # Verify that proxy binary is up-to-date.
+      let contents = readFile(path)
+      if contents != proxyExe:
+        return false
 
 proc isDefaultCCInPath*(params: CliParams): bool =
   # Fixes issue #104
@@ -130,28 +133,39 @@ proc writeProxy(bin: string, params: CliParams) =
         removeDir(dir)
         display("Removed", dir, priority = HighPriority)
 
-  if symlinkExists(proxyPath):
-    let msg = "Symlink for '$1' detected in '$2'. Can I remove it?" %
-              [bin, proxyPath.splitFile().dir]
-    if not prompt(dontForcePrompt, msg): return
-    let symlinkPath = expandSymlink(proxyPath)
-    removeFile(proxyPath)
-    display("Removed", "symlink pointing to $1" % symlinkPath,
-            priority = HighPriority)
 
-  # Don't write the file again if it already exists.
-  if fileExists(proxyPath) and readFile(proxyPath) == proxyExe: return
+  if symlinkExists(proxyPath) or (useSymLinks and fileExists(proxyPath)):
+    when useSymLinks:
+      echo "Removing ", proxyPath
+      removeFile(proxyPath)
+      echo "removed"
+    else:
+      let msg = "Symlink for '$1' detected in '$2'. Can I remove it?" %
+                [bin, proxyPath.splitFile().dir]
+      if not prompt(dontForcePrompt, msg): return
+      let symlinkPath = expandSymlink(proxyPath)
+      removeFile(proxyPath)
+      display("Removed", "symlink pointing to $1" % symlinkPath,
+              priority = HighPriority)
 
-  try:
-    writeFile(proxyPath, proxyExe)
-  except IOError:
-    display("Warning:", "component '$1' possibly in use, write failed" % bin, Warning,
-            priority = HighPriority)
-    return
+  # Use old proxy on windows, but stick with symlinks on linux systems
+  # TODO: Test if developer mode is enabled and we can create symlinks
+  when useSymLinks:
+    echo params.getSelectedPath() / bin.addFileExt(ExeExt)
+    createSymlink(params.getExePath(bin.addFileExt(ExeExt)), proxyPath)
+  else:
+    # Don't write the file again if it already exists.
+    if fileExists(proxyPath) and readFile(proxyPath) == proxyExe: return
+    try:
+      writeFile(proxyPath, proxyExe)
+    except IOError:
+      display("Warning:", "component '$1' possibly in use, write failed" % bin, Warning,
+              priority = HighPriority)
+      return
 
-  # Make sure the exe has +x flag.
-  setFilePermissions(proxyPath,
-                     getFilePermissions(proxyPath) + {fpUserExec})
+  when not useSymLinks:
+    # Make sure the exe has +x flag.
+    setFilePermissions(proxyPath, getFilePermissions(proxyPath) + {fpUserExec})
   display("Installed", "component '$1'" % bin, priority = HighPriority)
 
   # Check whether this is in the user's PATH.

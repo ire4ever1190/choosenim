@@ -60,7 +60,7 @@ proc areProxiesInstalled(params: CliParams, proxies: openarray[string]): bool =
   for proxy in proxies:
     # Verify that proxy exists.
     let path = params.getProxyPath(proxy)
-    if not fileExists(path):
+    if not (fileExists(path) or (symlinkExists(path) and useSymLinks)):
       return false
 
     when not useSymLinks:

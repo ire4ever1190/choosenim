@@ -143,6 +143,7 @@ test "can choose #v1.0.0":
   beginTest()
   block:
     let (output, exitCode) = exec("\"#v1.0.0\"", liveOutput=true)
+    checkpoint output
     check exitCode == QuitSuccess
 
     check inLines(output.processOutput, "building")
@@ -273,7 +274,7 @@ test "fails with invalid version":
     check exitCode == QuitFailure
     check inLines(output.processOutput, "Version")
     check inLines(output.processOutput, "does not exist")
-    
+
 test "can show general informations":
   beginTest()
   block:

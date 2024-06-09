@@ -42,7 +42,7 @@ proc getInstallationDir*(params: CliParams, version: Version): string =
   # running it. Since # is considered not safe for posix, the whole thing gets
   # escaped which causes the command to fail
   let versionStr = replace($version, "#", "hash")
-  return params.getInstallDir() / ("nim" & versionStr)
+  return params.getInstallDir() / ("nim-" & versionStr)
 
 proc isVersionInstalled*(params: CliParams, version: Version): bool =
   return fileExists(params.getInstallationDir(version) / "bin" /

@@ -57,7 +57,7 @@ Commands:
   update    <version/channel>    Installs the latest release of the specified
                                  version or channel.
   show                           Displays the selected version and channel.
-  show      path                 Prints only the path of the current Nim version. 
+  show      path                 Prints only the path of the current Nim version.
   update    self                 Updates choosenim itself.
   versions  [--installed]        Lists available versions of Nim, passing
                                  `--installed` only displays versions that
@@ -153,6 +153,33 @@ proc getBinArchiveFormat*(): string =
 proc getDownloadPath*(params: CliParams, downloadUrl: string): string =
   let (_, name, ext) = downloadUrl.splitFile()
   return params.getDownloadDir() / name & ext
+
+proc getSelectedPathChecked*(params: CliParams): string =
+  ## Like getSelectedPath except this returns an error
+  var path = ""
+  try:
+    path = params.getCurrentFile()
+    if not fileExists(path):
+      let msg = "No installation has been chosen. (File missing: $1)" % path
+      raise newException(ChooseNimError, msg)
+
+    result = readFile(path)
+  except Exception as exc:
+    let msg = "Unable to read $1. (Error was: $2)" % [path, exc.msg]
+    raise newException(ChooseNimError, msg)
+
+proc getExePath*(params: CliParams, exe: string): string {.raises: [ChooseNimError, ValueError].} =
+  ## Returns path to exe
+  try:
+    let exeName = exe.splitFile.name
+
+    if exeName in mingwProxies and defined(windows):
+      return getMingwBin(params) / exe
+    else:
+      return getSelectedPathChecked(params) / "bin" / exe
+  except Exception as exc:
+    let msg = "getAppFilename failed. (Error was: $1)" % exc.msg
+    raise newException(ChooseNimError, msg)
 
 proc writeHelp() =
   echo(doc)

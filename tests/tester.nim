@@ -273,7 +273,7 @@ test "fails with invalid version":
     check exitCode == QuitFailure
     check inLines(output.processOutput, "Version")
     check inLines(output.processOutput, "does not exist")
-    
+
 test "can show general informations":
   beginTest()
   block:

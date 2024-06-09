@@ -16,3 +16,7 @@ if target != "":
     switch("passL", "--sysroot=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk")
 
 switch("d", "zippyNoSimd")
+
+when not defined(windows):
+  # Use symlinks on non windows systems
+  switch("d", "useSymLinks")

@@ -1,7 +1,7 @@
 # Package
 import std/[os, strutils]
 
-version       = "0.9.1"
+version       = "0.10.0"
 author        = "Dominik Picheta"
 description   = "The Nim toolchain installer."
 license       = "BSD"
